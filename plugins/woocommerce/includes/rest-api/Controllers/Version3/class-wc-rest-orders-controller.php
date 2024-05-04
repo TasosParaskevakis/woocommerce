@@ -270,6 +270,20 @@ class WC_REST_Orders_Controller extends WC_REST_Orders_V2_Controller {
 		// Put the statuses back for further processing (next/prev links, etc).
 		$request['status'] = $statuses;
 
+	    // Add meta_query based on meta_data parameter
+		if ( isset( $request['meta_data'] ) ) {
+			$meta_queries = array();
+			foreach ( $request['meta_data'] as $meta ) {
+				$meta_queries[] = array(
+					'key'     => $meta['key'],
+					'value'   => $meta['value'],
+					'compare' => isset( $meta['compare'] ) ? $meta['compare'] : '=',
+				);
+			}
+	
+			$args['meta_query'] = $meta_queries;
+			}
+
 		return $args;
 	}
 
